@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:orientation="vertical"
+  android:layout_width="fill_parent"
+  android:layout_height="fill_parent"
+  android:background="@drawable/bg2">
+    
+  <com.fortwone.borderText.BorderTextView 
+      android:id="@+id/convertTop"
+	  android:gravity="center"
+	  android:layout_width="fill_parent"
+	  android:layout_height="40dp"
+	  android:background="@color/title_green"
+	  android:textStyle="bold"
+	  android:clickable="true"
+	  android:textColor="#000000"
+	  android:text="日期转换"
+  />
+  
+  <Button
+      android:id="@+id/yun_Date"
+      android:layout_marginTop="25dp"
+	  android:gravity="center"
+	  android:layout_width="fill_parent"
+	  android:layout_height="40dp"
+	  android:background="#ffffff"
+	  android:drawableRight="@drawable/date_convert"
+	  android:paddingRight="5dp"
+	  android:textStyle="bold"
+	  android:clickable="true"
+	  android:textColor="#000000"
+  />
+  
+
+  <Button
+      android:id="@+id/check"
+      android:layout_marginTop="25dp"
+      android:layout_gravity="center_horizontal"
+	  android:gravity="center"
+	  android:layout_width="100dp"
+	  android:layout_height="40dp"
+	  android:background="@drawable/shape"
+	  android:paddingRight="5dp"
+	  android:textStyle="bold"
+	  android:clickable="true"
+	  android:textColor="@color/text_white"
+	  android:text="查询" />
+  
+  <TextView 
+      android:id="@+id/convertResult"
+      android:layout_marginTop="25dp"
+	  android:gravity="center"
+	  android:layout_width="fill_parent"
+	  android:layout_height="70dp"
+	  android:textStyle="bold"
+	  android:textColor="#208080"
+	  android:textSize="20sp"
+  />
+
+  
+</LinearLayout>
+id:textColor="#208080"
+	  android:textSize="20sp"
+  />
+</LinearLayout>

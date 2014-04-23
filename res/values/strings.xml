@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="hello">Hello World, CalendarActivity!</string>
+    <string name="app_name">阿么日历</string>
+    <string name="noschedleall">没有日程</string>
+    <string name="add">添加</string>
+    <string name="back">返回</string>
+</resources>
