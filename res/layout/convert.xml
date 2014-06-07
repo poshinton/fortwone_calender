@@ -60,7 +60,3 @@
 
   
 </LinearLayout>
-id:textColor="#208080"
-	  android:textSize="20sp"
-  />
-</LinearLayout>

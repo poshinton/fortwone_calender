@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:arc="http://schemas.android.com/apk/res-auto"
     android:background="@drawable/bg2"
 	android:orientation="vertical" android:layout_width="fill_parent"
@@ -17,25 +17,23 @@
         android:drawableRight="@drawable/next_year"
         android:paddingLeft="35dp"
         android:paddingRight="35dp"
+        
 	/>
 	<ViewFlipper 
+	    android:layout_below="@id/toptext"
 	    android:id="@+id/flipper"
 		android:layout_width="fill_parent" 
 		android:layout_height="wrap_content" />
 
-	<LinearLayout
+	<RelativeLayout
 	    android:layout_width="fill_parent"
 	    android:layout_height="38dp"
+	    android:layout_below="@id/flipper"
 	    android:orientation="horizontal"
 	    android:layout_marginTop="30dp" >
-	    <com.capricorn.RayMenu
-            android:id="@+id/ray_menu"
-            android:layout_width="fill_parent"
-            android:layout_height="60dp"
-            android:paddingLeft="5dp"
-            android:paddingRight="5dp"/>
 
-<!--	<Button 
+
+	<Button 
 	    android:id="@+id/orrang_day"
 	    android:layout_height="wrap_content"
 	    android:layout_width="wrap_content"
@@ -43,6 +41,8 @@
 	    android:layout_marginRight="60dp"
 	    android:background="@drawable/yun"
 	    android:textColor="@color/text_white"
+	    android:layout_alignParentLeft="true"
+	    android:layout_alignParentBottom="true"
 	    android:text="日程"/>
 	<Button 
 	    android:id="@+id/lunar_transport"
@@ -52,12 +52,11 @@
 	    android:background="@drawable/yun"
 	    android:layout_marginRight="16dp"
 	    android:textColor="@color/text_white"
-	    android:text="农历转换"/>   -->
+	    android:layout_alignParentRight="true"
+	    android:layout_alignParentBottom="true"
+	    android:text="农历转换"/>   
 	    
-	    
-
-	    
-	</LinearLayout>
+	</RelativeLayout>
 	
 
-</LinearLayout>
+</RelativeLayout>

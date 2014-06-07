@@ -5,8 +5,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import com.capricorn.ArcMenu;
-import com.capricorn.RayMenu;
 import com.fortwone.activity.CalendarConvert;
 import com.fortwone.activity.CalendarView;
 import com.fortwone.activity.R;
@@ -56,7 +54,6 @@ import android.widget.Toast;
 import android.widget.ViewFlipper;
 import android.widget.AbsListView.LayoutParams;
 import android.widget.AdapterView.OnItemClickListener;
-import com.capricorn.RayMenu;
 
 /**
  * 日历显示activity
@@ -79,7 +76,6 @@ public class CalendarActivity extends Activity implements OnGestureListener {
 	private String currentDate = "";
 	private Button orrang_day;
 	private Button lunar_transport;
-	private RayMenu raymenu; 
 	
 	private ScheduleDAO dao = null;
 	private static final int[] ITEM_DRAWABLES = { R.drawable.composer_camera, R.drawable.composer_music,
@@ -106,25 +102,17 @@ public class CalendarActivity extends Activity implements OnGestureListener {
         flipper = (ViewFlipper) findViewById(R.id.flipper);
         flipper.removeAllViews();
         calV = new CalendarView(this, getResources(),jumpMonth,jumpYear,year_c,month_c,day_c);
-     //   orrang_day=(Button)findViewById(R.id.orrang_day);
-     //   lunar_transport=(Button)findViewById(R.id.lunar_transport);
+        orrang_day=(Button)findViewById(R.id.orrang_day);
+        lunar_transport=(Button)findViewById(R.id.lunar_transport);
 
 
-		raymenu = (RayMenu) findViewById(R.id.ray_menu);
         final int itemCount = ITEM_DRAWABLES.length;
 		for (int i = 0; i < itemCount; i++) {
 			ImageView item = new ImageView(this);
 			item.setImageResource(ITEM_DRAWABLES[i]);
 
 			final int position = i;
-			raymenu.addItem(item, new OnClickListener() {
 
-				@Override
-				public void onClick(View v) {
-					Toast.makeText(CalendarActivity.this, "position:" + position, Toast.LENGTH_SHORT).show();
-				}
-			});
-		}
         addGridView();
         gridView.setAdapter(calV);
         //flipper.addView(gridView);
@@ -153,6 +141,7 @@ public class CalendarActivity extends Activity implements OnGestureListener {
 			}
 
 	});
+		}
 		}
 	
 	
@@ -439,21 +428,8 @@ public class CalendarActivity extends Activity implements OnGestureListener {
 			}
 		});
 		gridView.setLayoutParams(params);
+	
+    
+
 	}
-	private void initArcMenu(ArcMenu menu, int[] itemDrawables) {
-        final int itemCount = itemDrawables.length;
-        for (int i = 0; i < itemCount; i++) {
-            ImageView item = new ImageView(this);
-            item.setImageResource(itemDrawables[i]);
-
-            final int position = i;
-            menu.addItem(item, new OnClickListener() {
-
-                @Override
-                public void onClick(View v) {
-                    Toast.makeText(CalendarActivity.this, "position:" + position, Toast.LENGTH_SHORT).show();
-                }
-            });
-        }
-    }
 }
