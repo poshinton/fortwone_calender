@@ -12,15 +12,17 @@ public class ScheduleVO {
 	private int remindID;
 	private String scheduleContent;
 	private String scheduleDate;
+	private String scheduletime;
 	
 	public ScheduleVO(){}
 	
-	public ScheduleVO(int scheduleID,int scheduleTypeID,int remindID,String scheduleContent,String scheduleDate){
+	public ScheduleVO(int scheduleID,int scheduleTypeID,int remindID,String scheduleContent,String scheduleDate,String scheduletime){
 		this.scheduleID = scheduleID;
 		this.scheduleTypeID = scheduleTypeID;
 		this.remindID = remindID;
 		this.scheduleContent = scheduleContent;
 		this.scheduleDate = scheduleDate;
+		this.scheduletime = scheduletime ;
 	}
 	
 	public int getScheduleID() {
@@ -53,6 +55,13 @@ public class ScheduleVO {
 
 	public void setScheduleDate(String scheduleDate) {
 		this.scheduleDate = scheduleDate;
+	}
+	public String getScheduletime() {
+		return scheduletime;
+	}
+
+	public void setScheduletime(String scheduletime) {
+		this.scheduletime = scheduletime;
 	}
 	
 }

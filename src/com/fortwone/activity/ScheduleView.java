@@ -148,14 +148,14 @@ public class ScheduleView extends Activity {
 					new AlertDialog.Builder(ScheduleView.this).setTitle("输入日程").setMessage("日程信息不能为空").setPositiveButton("确认", null).show();
 				}else{
 					//将日程信息保存
-					String showDate = handleInfo(Integer.parseInt(scheduleYear), Integer.parseInt(tempMonth), Integer.parseInt(tempDay), hour, minute, week, remindID);
+				//	String showDate = handleInfo(Integer.parseInt(scheduleYear), Integer.parseInt(tempMonth), Integer.parseInt(tempDay), hour, minute, week, remindID);
 	                ScheduleVO schedulevo = new ScheduleVO();
 	                schedulevo.setScheduleTypeID(sch_typeID);
 	                schedulevo.setRemindID(remindID);
 	                String showDate1 = (Integer.parseInt(scheduleYear)+"年"+Integer.parseInt(tempMonth)+"月"+Integer.parseInt(tempDay)+"  "+week);
-	                schedulevo.setScheduleDate(showDate);
-	                // String showtime = (hour+":"+ minute+"       "+ remindID);
-	                // schedulevo.setScheduletime(showtime);
+	                schedulevo.setScheduleDate(showDate1);
+	                String showtime = handleInfotext(Integer.parseInt(scheduleYear), Integer.parseInt(tempMonth), Integer.parseInt(tempDay), hour, minute, week, remindID);
+	                schedulevo.setScheduletime(showtime);
 	                schedulevo.setScheduleContent(scheduleText.getText().toString());
 					int scheduleID = dao.save(schedulevo);
 					//将scheduleID保存到数据中(因为在CalendarActivity中点击gridView中的一个Item可能会对应多个标记日程(scheduleID))
@@ -268,21 +268,39 @@ public class ScheduleView extends Activity {
 	 * @param week
 	 * @param remindID
 	 */
-	public String handleInfo(int year, int month, int day, int hour, int minute, String week, int remindID){
+//	public String handleInfo(int year, int month, int day, int hour, int minute, String week, int remindID){
+//		String remindType = remind[remindID];     //提醒类型
+//		String show = "";
+//		if(0 <= remindID && remindID <= 4){
+//			//提醒一次,隔10分钟,隔30分钟,隔一小时
+//			show = year+"-"+month+"-"+day+"\t"+hour+":"+minute+"\t"+week+"\t\t"+remindType;
+//		}else if(remindID == 5){
+//			//每周
+//			show = "每周"+week+"\t"+hour+":"+minute;
+//		}else if(remindID == 6){
+//			//每月
+//			show = "每月"+day+"号"+"\t"+hour+":"+minute;
+//		}else if(remindID == 7){
+//			//每年
+//			show = "每年"+month+"-"+day+"\t"+hour+":"+minute;
+//		}
+//		return show;
+//	}
+	public String handleInfotext(int year, int month, int day, int hour, int minute, String week, int remindID){
 		String remindType = remind[remindID];     //提醒类型
 		String show = "";
 		if(0 <= remindID && remindID <= 4){
 			//提醒一次,隔10分钟,隔30分钟,隔一小时
-			show = year+"-"+month+"-"+day+"\t"+hour+":"+minute+"\t"+week+"\t\t"+remindType;
+			show = hour+":"+minute+"\t"+"\t\t"+remindType;
 		}else if(remindID == 5){
 			//每周
 			show = "每周"+week+"\t"+hour+":"+minute;
 		}else if(remindID == 6){
 			//每月
-			show = "每月"+day+"号"+"\t"+hour+":"+minute;
+			show = hour+":"+minute+"\t\t"+"每月"+day+"号";
 		}else if(remindID == 7){
 			//每年
-			show = "每年"+month+"-"+day+"\t"+hour+":"+minute;
+			show =hour+":"+minute+"\t\t"+"每年"+month+"-"+day;
 		}
 		return show;
 	}

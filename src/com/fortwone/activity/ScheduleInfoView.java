@@ -130,7 +130,7 @@ public class ScheduleInfoView extends Activity {
 		scheduleVO = dao.getScheduleByID(scheduleID);
 		scheduleinfodate.setText(scheduleVO.getScheduleDate());
 		scheduleinfotype.setText(CalendarConstant.sch_type[scheduleVO.getScheduleTypeID()]);
-		scheduleinfotime.setText("11:11");
+		scheduleinfotime.setText(scheduleVO.getScheduletime());
 		scheduleinfonotes.setText(scheduleVO.getScheduleContent());
 		
 		
