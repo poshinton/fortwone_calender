@@ -3,21 +3,6 @@ package com.fortwone.activity;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
-
-import com.fortwone.activity.CalendarConvert;
-import com.fortwone.activity.CalendarView;
-import com.fortwone.activity.R;
-import com.fortwone.activity.ScheduleAll;
-import com.fortwone.activity.ScheduleInfoView;
-import com.fortwone.activity.ScheduleView;
-import com.fortwone.activity.R.anim;
-import com.fortwone.activity.R.drawable;
-import com.fortwone.activity.R.id;
-import com.fortwone.activity.R.layout;
-import com.fortwone.borderText.BorderText;
-import com.fortwone.dao.ScheduleDAO;
-import com.fortwone.vo.ScheduleVO;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -29,31 +14,30 @@ import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.util.AttributeSet;
-import android.util.Log;
 import android.view.Display;
 import android.view.GestureDetector;
+import android.view.GestureDetector.OnGestureListener;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.WindowManager;
-import android.view.GestureDetector.OnGestureListener;
 import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
+import android.view.WindowManager;
 import android.view.animation.AnimationUtils;
+import android.widget.AbsListView.LayoutParams;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.GridView;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 import android.widget.ViewFlipper;
-import android.widget.AbsListView.LayoutParams;
-import android.widget.AdapterView.OnItemClickListener;
+
+import com.fortwone.borderText.BorderText;
+import com.fortwone.dao.ScheduleDAO;
 
 /**
  * 日历显示activity
@@ -75,11 +59,10 @@ public class CalendarActivity extends Activity implements OnGestureListener {
 	private int day_c = 0;
 	private String currentDate = "";
 	private Button orrang_day;
-	private Button lunar_transport;
-	
+	private Button lunar_transport,addbutton;
+	private TextView hinttext;
 	private ScheduleDAO dao = null;
-	private static final int[] ITEM_DRAWABLES = { R.drawable.composer_camera, R.drawable.composer_music,
-			R.drawable.composer_place, R.drawable.composer_sleep, R.drawable.composer_thought, R.drawable.composer_with };
+
 
 	public CalendarActivity() {
 
@@ -106,12 +89,12 @@ public class CalendarActivity extends Activity implements OnGestureListener {
         lunar_transport=(Button)findViewById(R.id.lunar_transport);
 
 
-        final int itemCount = ITEM_DRAWABLES.length;
-		for (int i = 0; i < itemCount; i++) {
-			ImageView item = new ImageView(this);
-			item.setImageResource(ITEM_DRAWABLES[i]);
-
-			final int position = i;
+//        final int itemCount = ITEM_DRAWABLES.length;
+//		for (int i = 0; i < itemCount; i++) {
+//			ImageView item = new ImageView(this);
+//			item.setImageResource(ITEM_DRAWABLES[i]);
+//
+//			final int position = i;
 
         addGridView();
         gridView.setAdapter(calV);
@@ -142,7 +125,7 @@ public class CalendarActivity extends Activity implements OnGestureListener {
 
 	});
 		}
-		}
+		
 	
 	
 	@Override
@@ -317,12 +300,12 @@ public class CalendarActivity extends Activity implements OnGestureListener {
 		view.setBackgroundDrawable(draw);
 		textDate.append(calV.getShowYear()).append("年").append(
 				calV.getShowMonth()).append("月").append("\t");
+		
+		textDate.append("(").append(calV.getCyclical()).append(")").append(calV.getAnimalsYear()).append("年");
 		if (!calV.getLeapMonth().equals("") && calV.getLeapMonth() != null) {
-			textDate.append("闰").append(calV.getLeapMonth()).append("月")
+			textDate.append("\t").append("闰").append(calV.getLeapMonth()).append("月")
 					.append("\t");
 		}
-		textDate.append(calV.getAnimalsYear()).append("年").append("(").append(
-				calV.getCyclical()).append("年)");
 		view.setText(textDate);
 		view.setTypeface(Typeface.DEFAULT_BOLD);
 	}
@@ -348,7 +331,7 @@ public class CalendarActivity extends Activity implements OnGestureListener {
 		gridView.setSelector(new ColorDrawable(Color.TRANSPARENT)); // 去除gridView边框
 		gridView.setVerticalSpacing(1);
 		gridView.setHorizontalSpacing(1);
-        gridView.setBackgroundResource(R.drawable.gridview_bk);
+//        gridView.setBackgroundResource(R.color.bg);
 		gridView.setOnTouchListener(new OnTouchListener() {
             //将gridview中的触摸事件回传给gestureDetector
 			@Override
@@ -369,19 +352,19 @@ public class CalendarActivity extends Activity implements OnGestureListener {
 				  int endPosition = calV.getEndPosition();
 				  if(startPosition <= position  && position <= endPosition){
 					  String scheduleDay = calV.getDateByClickItem(position).split("\\.")[0];  //这一天的阳历
-					  //String scheduleLunarDay = calV.getDateByClickItem(position).split("\\.")[1];  //这一天的阴历
 	                  String scheduleYear = calV.getShowYear();
 	                  String scheduleMonth = calV.getShowMonth();
 	                  String week = "";
 	                  
 	                  //通过日期查询这一天是否被标记，如果标记了日程就查询出这天的所有日程信息
-	                  String[] scheduleIDs = dao.getScheduleByTagDate(Integer.parseInt(scheduleYear), Integer.parseInt(scheduleMonth), Integer.parseInt(scheduleDay));
+	                  final String[] scheduleIDs = dao.getScheduleByTagDate(Integer.parseInt(scheduleYear), Integer.parseInt(scheduleMonth), Integer.parseInt(scheduleDay));
 	                  if(scheduleIDs != null && scheduleIDs.length > 0){
 	                	  //跳转到显示这一天的所有日程信息界面
-		  				  Intent intent = new Intent();
+	                	  Intent intent = new Intent();
 		  				  intent.setClass(CalendarActivity.this, ScheduleInfoView.class);
 		                  intent.putExtra("scheduleID", scheduleIDs);
-		  				  startActivity(intent);  
+		  				  startActivity(intent);
+		  				  
 		  				  
 	                  }else{
 	                  //直接跳转到需要添加日程的界面
@@ -411,18 +394,30 @@ public class CalendarActivity extends Activity implements OnGestureListener {
 		                	  break;
         }
 						 
-		                  ArrayList<String> scheduleDate = new ArrayList<String>();
+		                  final ArrayList<String> scheduleDate = new ArrayList<String>();
 		                  scheduleDate.add(scheduleYear);
 		                  scheduleDate.add(scheduleMonth);
 		                  scheduleDate.add(scheduleDay);
 		                  scheduleDate.add(week);
 		                  //scheduleDate.add(scheduleLunarDay);
 		                  
+		                  addbutton=(Button)findViewById(R.id.addarrange);
+	                	  hinttext=(TextView)findViewById(R.id.hittentext);
+	                	  addbutton.setVisibility(0);
+	                	  hinttext.setVisibility(0);
+	                	  hinttext.setText(scheduleYear+"年"+scheduleMonth+"月"+scheduleDay+"日  无日程安排");
+	                	  addbutton.setOnClickListener(new OnClickListener() {
+	          				@Override
+	        				public void onClick(View v) {
+	          					Intent intent = new Intent();
+	  		                  intent.putStringArrayListExtra("scheduleDate", scheduleDate);
+	  		                  intent.setClass(CalendarActivity.this, ScheduleView.class);
+	  		                  startActivity(intent);
+	          				}
+	                		  
+	                		    
+	                	  });
 		                  
-		                  Intent intent = new Intent();
-		                  intent.putStringArrayListExtra("scheduleDate", scheduleDate);
-		                  intent.setClass(CalendarActivity.this, ScheduleView.class);
-		                  startActivity(intent);
     }
 				  }
 			}

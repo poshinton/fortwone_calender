@@ -162,8 +162,7 @@ public class CalendarView extends BaseAdapter {
 		TextView textView = (TextView) convertView.findViewById(R.id.tvtext);
 		String d = dayNumber[position].split("\\.")[0];
 		String dv = dayNumber[position].split("\\.")[1];
-		//Typeface typeface = Typeface.createFromAsset(context.getAssets(), "fonts/Helvetica.ttf");
-		//textView.setTypeface(typeface);
+		
 		SpannableString sp = new SpannableString(d+"\n"+dv);
 		sp.setSpan(new StyleSpan(android.graphics.Typeface.BOLD), 0, d.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 		sp.setSpan(new RelativeSizeSpan(1.2f) , 0, d.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
@@ -175,17 +174,22 @@ public class CalendarView extends BaseAdapter {
 		textView.setTextColor(Color.GRAY);
 		if(position<7){
 			//设置周
-			textView.setTextColor(Color.BLACK);
-			drawable = res.getDrawable(R.drawable.week_top);
-			textView.setBackgroundDrawable(drawable);
+			if(position==0 ||position==6){
+				textView.setTextColor(0xff009944);
+			}
+			textView.setTextSize(10);
 		}
 		
 		if (position < daysOfMonth + dayOfWeek+7 && position >= dayOfWeek+7) {
 			// 当前月信息显示
 			textView.setTextColor(Color.BLACK);// 当月字体设黑
-			drawable = res.getDrawable(R.drawable.item);
-			//textView.setBackgroundDrawable(drawable);
-			//textView.setBackgroundColor(Color.WHITE);
+			if(position == 7||position ==13||position ==14||
+					position ==20||position ==21||position ==27||position ==28||
+					position ==34||position ==35||position ==41||position ==42){
+				textView.setTextColor(0xff009944);
+				
+			}
+
 
 		}
 		if(schDateTagFlag != null && schDateTagFlag.length >0){
@@ -198,6 +202,7 @@ public class CalendarView extends BaseAdapter {
 		}
 		if(currentFlag == position){ 
 			//设置当天的背景
+			System.out.println("%%%%%%%%%%%%%%%"+currentFlag);
 			drawable = res.getDrawable(R.drawable.current_day_bgc);
 			textView.setBackgroundDrawable(drawable);
 			textView.setTextColor(Color.WHITE);
@@ -341,7 +346,44 @@ public class CalendarView extends BaseAdapter {
 	}
 
 	public void setLeapMonth(String leapMonth) {
-		this.leapMonth = leapMonth;
+		System.out.println("$$$$$$$$$$$$$$$$$$"+leapMonth);
+		if(leapMonth.equals("1") ){
+			this.leapMonth = "正月";
+		}
+		else if(leapMonth.equals("2") ){
+			this.leapMonth = "二";
+		}
+		else if(leapMonth.equals("3") ){
+			this.leapMonth = "三";
+		}
+		else if(leapMonth.equals("4") ){
+			this.leapMonth = "四";
+		}
+		else if(leapMonth.equals("5") ){
+			this.leapMonth = "五";
+		}
+		else if(leapMonth.equals("6") ){
+			this.leapMonth = "六";
+		}
+		else if(leapMonth.equals("7") ){
+			this.leapMonth = "七";
+		}
+		else if(leapMonth.equals("8") ){
+			this.leapMonth = "八";
+		}
+		else if(leapMonth.equals("9") ){
+			this.leapMonth = "九";
+		}
+		else if(leapMonth.equals("10") ){
+			this.leapMonth = "十";
+		}
+		else if(leapMonth.equals("11") ){
+			this.leapMonth = "十一";
+		}
+		else if(leapMonth.equals("12") ){
+			this.leapMonth = "腊";
+		}
+		else this.leapMonth = leapMonth;
 	}
 	
 	public String getCyclical() {

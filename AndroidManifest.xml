@@ -5,14 +5,14 @@
     android:versionName="1.0" >
 
     <uses-sdk
-        android:minSdkVersion="11"
+        android:minSdkVersion="16"
         android:targetSdkVersion="19" />
 
     <application
         android:allowBackup="true"
         android:icon="@drawable/yun_calendar"
         android:label="@string/app_name"
-      	android:theme="@android:style/Theme.Holo.Wallpaper.NoTitleBar">
+      	android:theme="@android:style/Theme.Holo.Light.NoActionBar">
         <activity
             android:name="com.fortwone.activity.CalendarActivity"
             android:label="@string/app_name" >

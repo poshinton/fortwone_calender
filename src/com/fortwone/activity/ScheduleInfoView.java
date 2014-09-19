@@ -1,41 +1,41 @@
 package com.fortwone.activity;
 
-import com.fortwone.constant.CalendarConstant;
-import com.fortwone.dao.ScheduleDAO;
-import com.fortwone.borderText.BorderEditText;
-import com.fortwone.borderText.BorderTextView;
-import com.fortwone.vo.ScheduleVO;
-import com.fortwone.activity.R;
+import java.util.ArrayList;
 
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.DialogInterface.OnClickListener;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
-import android.view.View.OnFocusChangeListener;
 import android.view.View.OnLongClickListener;
-import android.view.View.OnTouchListener;
-import android.widget.LinearLayout;
 import android.widget.AbsListView.LayoutParams;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
+
+import com.fortwone.borderText.BorderTextView;
+import com.fortwone.constant.CalendarConstant;
+import com.fortwone.dao.ScheduleDAO;
+import com.fortwone.vo.ScheduleVO;
 
 public class ScheduleInfoView extends Activity {
 
-	private LinearLayout layout = null;
-	private BorderTextView textTop = null;
+	private RelativeLayout layout = null;
+	private TextView textTop = null,scheduleinfodate,scheduleinfotime,scheduleinfotype,scheduleinfonotes;
 	private BorderTextView info = null;
 	private BorderTextView date = null;
 	private BorderTextView type = null;
-	private BorderEditText editInfo = null;
+	private EditText editInfo = null;
 	private ScheduleDAO dao = null;
 	private ScheduleVO scheduleVO = null;
+	private Button  scheduleback;
 	
 	private String scheduleInfo = "";    //日程信息被修改前的内容
 	private String scheduleChangeInfo = "";  //日程信息被修改之后的内容
@@ -45,44 +45,41 @@ public class ScheduleInfoView extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
-		
+		setContentView(R.layout.schedule_info);
 		dao = new ScheduleDAO(this);
+	    textTop=(TextView)findViewById(R.id.scheduleInfoTop);
+	    
+//        //final LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
+//        params.setMargins(0, 5, 0, 0);
+		layout = (RelativeLayout)findViewById(R.id.scheduleInfolayout);
+//		layout.setOrientation(LinearLayout.VERTICAL);
+//		layout.setLayoutParams(params);
+//		
+//		textTop = new BorderTextView(this, null);
+		textTop.setTextColor(Color.WHITE); 
+		textTop.setBackgroundColor(0xff009944);
+		textTop.setText("日程列表");
+		textTop.setHeight(57);
+//		textTop.setGravity(Gravity.CENTER);
 		
-        //final LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
-        params.setMargins(0, 5, 0, 0);
-		layout = new LinearLayout(this); // 实例化布局对象
-		layout.setOrientation(LinearLayout.VERTICAL);
-		layout.setBackgroundResource(R.drawable.schedule_bk);
-		layout.setLayoutParams(params);
-		
-		textTop = new BorderTextView(this, null);
-		textTop.setTextColor(Color.BLACK); 
-		textTop.setBackgroundResource(R.drawable.top_day);
-		textTop.setText("日程详情");
-		textTop.setHeight(47);
-		textTop.setGravity(Gravity.CENTER);
-		
-			
-		editInfo = new BorderEditText(ScheduleInfoView.this, null);
-		editInfo.setTextColor(Color.BLACK); 
-		editInfo.setBackgroundColor(Color.WHITE);
-		editInfo.setHeight(200);
-		editInfo.setGravity(Gravity.TOP);
-		editInfo.setLayoutParams(params);
-		editInfo.setPadding(10, 5, 10, 5);
-		
-		layout.addView(textTop);
-		
+//		editInfo = (EditText)findViewById(R.id.scheduleDatetext);
+//		editInfo.setTextColor(Color.BLACK); 
+//		editInfo.setBackgroundColor(Color.WHITE);
+//		editInfo.setHeight(200);
+//		editInfo.setGravity(Gravity.TOP);
+////		editInfo.setLayoutParams(params);
+//		editInfo.setPadding(10, 5, 10, 5);		
+	//	layout.addView(textTop);
 		
 		Intent intent = getIntent();
-		//scheduleID = Integer.parseInt(intent.getStringExtra("scheduleID"));
+		
 		//一个日期可能对应多个标记日程(scheduleID)
 		String[] scheduleIDs = intent.getStringArrayExtra("scheduleID");
 		//显示日程详细信息
 		for(int i = 0; i< scheduleIDs.length; i++){
 			handlerInfo(Integer.parseInt(scheduleIDs[i]));
 		}
-		setContentView(layout);
+//		setContentView(layout);
 		
 				
 	}
@@ -105,7 +102,16 @@ public class ScheduleInfoView extends Activity {
 			startActivity(intent);
 			break;
         case Menu.FIRST+1:
-    	    
+        	Intent intent2 = new Intent();
+        final ArrayList<String> scheduleDate = new ArrayList<String>();
+//        scheduleDate.add(scheduleYear);
+//        scheduleDate.add(scheduleMonth);
+//        scheduleDate.add(scheduleDay);
+//        scheduleDate.add(week);
+        intent2.putStringArrayListExtra("scheduleDate", scheduleDate);
+		intent2.setClass(ScheduleInfoView.this, ScheduleView.class);
+		startActivity(intent2);
+		break;
 		}
 		return super.onOptionsItemSelected(item);
 	}
@@ -116,45 +122,21 @@ public class ScheduleInfoView extends Activity {
 	 * 显示日程所有信息
 	 */
 	public void handlerInfo(int scheduleID){
-		BorderTextView date = new BorderTextView(this, null);
-		date.setTextColor(Color.BLACK); 
-		date.setBackgroundColor(Color.WHITE);
-		date.setLayoutParams(params);
-		date.setGravity(Gravity.CENTER_VERTICAL);
-		date.setHeight(40);
-		date.setPadding(10, 0, 10, 0);
-		
-		BorderTextView type = new BorderTextView(this, null);
-		type.setTextColor(Color.BLACK); 
-		type.setBackgroundColor(Color.WHITE);
-		type.setLayoutParams(params);
-		type.setGravity(Gravity.CENTER);
-		type.setHeight(40);
-		type.setPadding(10, 0, 10, 0);
-		type.setTag(scheduleID);
-		
-		final BorderTextView info = new BorderTextView(this, null);
-		info.setTextColor(Color.BLACK); 
-		info.setBackgroundColor(Color.WHITE);
-		info.setGravity(Gravity.CENTER_VERTICAL);
-		info.setLayoutParams(params);
-		info.setPadding(10, 5, 10, 5);
-		
-		
-		layout.addView(type);
-		layout.addView(date);
-		layout.addView(info);
-		/*Intent intent = getIntent();
-		int scheduleID = Integer.parseInt(intent.getStringExtra("scheduleID"));*/
+		scheduleinfodate =(TextView)findViewById(R.id.scheduleDatetext);
+		scheduleinfotime =(TextView)findViewById(R.id.scheduletime);
+		scheduleinfotype =(TextView)findViewById(R.id.scheduletype);
+		scheduleinfonotes=(TextView)findViewById(R.id.schedulenotes);
+		scheduleinfotype.setTag(scheduleID);
 		scheduleVO = dao.getScheduleByID(scheduleID);
-		date.setText(scheduleVO.getScheduleDate());
-		type.setText(CalendarConstant.sch_type[scheduleVO.getScheduleTypeID()]);
-		info.setText(scheduleVO.getScheduleContent());
+		scheduleinfodate.setText(scheduleVO.getScheduleDate());
+		scheduleinfotype.setText(CalendarConstant.sch_type[scheduleVO.getScheduleTypeID()]);
+		scheduleinfotime.setText("11:11");
+		scheduleinfonotes.setText(scheduleVO.getScheduleContent());
 		
 		
 		
 		//长时间按住日程类型textview就提示是否删除日程信息
-		type.setOnLongClickListener(new OnLongClickListener() {
+		scheduleinfotype.setOnLongClickListener(new OnLongClickListener() {
 			
 			@Override
 			public boolean onLongClick(View v) {
@@ -178,5 +160,12 @@ public class ScheduleInfoView extends Activity {
 		});
 		
 		
+	}
+	public void back(View view)
+			
+	{
+		Intent back = new Intent();
+		back.setClass(ScheduleInfoView.this, CalendarActivity.class);
+		startActivity(back);
 	}
 }

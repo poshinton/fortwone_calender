@@ -1,20 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:arc="http://schemas.android.com/apk/res-auto"
-    android:background="@drawable/bg2"
 	android:orientation="vertical" android:layout_width="fill_parent"
 	android:layout_height="fill_parent">
 	
 	<com.fortwone.borderText.BorderText
 	    android:layout_width="fill_parent" 
-	    android:layout_height="38dp"
+	    android:layout_height="48dp"
         android:gravity="center"
         android:id="@+id/toptext"
-        android:background="@color/bg"
         android:textColor="@color/text_white"
         android:textSize="15sp"
-        android:drawableLeft="@drawable/previous_year"
-        android:drawableRight="@drawable/next_year"
         android:paddingLeft="35dp"
         android:paddingRight="35dp"
         
@@ -25,38 +21,51 @@
 		android:layout_width="fill_parent" 
 		android:layout_height="wrap_content" />
 
-	<RelativeLayout
-	    android:layout_width="fill_parent"
-	    android:layout_height="38dp"
+	<TextView 
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:visibility="gone"
+	    android:text="当前无日程安排"
+	    android:id="@+id/hittentext"
+	    android:layout_marginTop="10dp"
 	    android:layout_below="@id/flipper"
-	    android:orientation="horizontal"
-	    android:layout_marginTop="30dp" >
-
+	    android:layout_centerHorizontal="true"
+	  
+	    />
+	<Button 
+	    android:layout_width="wrap_content"
+	    android:layout_height="60dp"
+	    android:text="添加日程"
+	    android:visibility="gone"
+	    android:id="@+id/addarrange"
+	    android:background="@drawable/yun_button"
+	    android:textColor="@color/text_black"
+	    android:layout_centerHorizontal="true"
+	    android:layout_alignParentBottom="true"/>
+"
 
 	<Button 
 	    android:id="@+id/orrang_day"
-	    android:layout_height="wrap_content"
+	    android:layout_height="60dp"
 	    android:layout_width="wrap_content"
-	    android:layout_marginLeft="16dp"
-	    android:layout_marginRight="60dp"
-	    android:background="@drawable/yun"
-	    android:textColor="@color/text_white"
+	    android:background="@drawable/yun_button"
+	    android:textColor="@color/text_black"
 	    android:layout_alignParentLeft="true"
 	    android:layout_alignParentBottom="true"
 	    android:text="日程"/>
 	<Button 
 	    android:id="@+id/lunar_transport"
-	    android:layout_height="wrap_content"
+	    android:layout_height="60dp"
 	    android:layout_width="wrap_content"
-	    android:layout_marginLeft="90dp"
-	    android:background="@drawable/yun"
-	    android:layout_marginRight="16dp"
-	    android:textColor="@color/text_white"
+	    
+	    android:background="@drawable/yun_button"
+	  
+	    android:textColor="@color/text_black"
 	    android:layout_alignParentRight="true"
 	    android:layout_alignParentBottom="true"
 	    android:text="农历转换"/>   
 	    
-	</RelativeLayout>
+
 	
 
 </RelativeLayout>

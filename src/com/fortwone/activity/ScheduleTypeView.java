@@ -50,7 +50,6 @@ public class ScheduleTypeView extends Activity {
 		
 		layout = new LinearLayout(this); // 实例化布局对象
 		layout.setOrientation(LinearLayout.VERTICAL);
-		layout.setBackgroundResource(R.drawable.schedule_bk);
 		layout.setLayoutParams(params);
 		
 		group = new RadioGroup(this);

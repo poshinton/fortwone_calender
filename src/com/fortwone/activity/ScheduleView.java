@@ -152,7 +152,10 @@ public class ScheduleView extends Activity {
 	                ScheduleVO schedulevo = new ScheduleVO();
 	                schedulevo.setScheduleTypeID(sch_typeID);
 	                schedulevo.setRemindID(remindID);
+	                String showDate1 = (Integer.parseInt(scheduleYear)+"年"+Integer.parseInt(tempMonth)+"月"+Integer.parseInt(tempDay)+"  "+week);
 	                schedulevo.setScheduleDate(showDate);
+	                // String showtime = (hour+":"+ minute+"       "+ remindID);
+	                // schedulevo.setScheduletime(showtime);
 	                schedulevo.setScheduleContent(scheduleText.getText().toString());
 					int scheduleID = dao.save(schedulevo);
 					//将scheduleID保存到数据中(因为在CalendarActivity中点击gridView中的一个Item可能会对应多个标记日程(scheduleID))
