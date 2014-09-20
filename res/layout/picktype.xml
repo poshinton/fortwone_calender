@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:id="@+id/pickuplayout"
+    android:layout_height="match_parent" >
+    <TextView 
+      android:id="@+id/picktypeTop"
+	  android:gravity="center"
+	  android:layout_width="fill_parent"
+	  android:layout_height="40dp"
+	  android:background="#009944"
+	  android:textStyle="bold"
+	  android:clickable="true"
+	  android:textColor="#ffffff"
+	  android:text="类型和重复"
+  />
+  <RadioGroup 
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_below="@id/picktypeTop"
+      android:id="@+id/pickupRadio">
+   
+  </RadioGroup>
+  <Button 
+		android:layout_width="wrap_content"
+		android:layout_height="60dp"
+		android:onClick="picktype"
+		android:background="@drawable/yun_button"
+		android:text="选择重复类型" 
+		android:id="@+id/pickuptype"
+		android:layout_below="@id/pickupRadio"
+		android:layout_centerHorizontal="true"
+	/>
+  <Button 
+      android:layout_width="wrap_content"
+      android:layout_height="60dp"
+      android:layout_alignParentBottom="true"
+      android:text="确定"
+      android:background="@drawable/yun_button"
+      android:id="@+id/typeok"/>
+  <Button 
+      android:id="@+id/typecancle"
+      android:layout_width="wrap_content"
+      android:layout_height="60dp"
+      android:layout_alignParentBottom="true"
+      android:text="取消"
+      android:background="@drawable/yun_button"
+      android:layout_alignParentRight="true"
+      />
+
+</RelativeLayout>

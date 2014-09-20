@@ -4,6 +4,7 @@
   android:orientation="vertical"
   android:layout_width="fill_parent"
   android:id="@+id/scheduleInfolayout"
+  
   android:layout_height="fill_parent">
   
   <TextView 
@@ -38,7 +39,9 @@
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:layout_below="@id/scheduleInfoTop"
-          android:textColor="#00b7ee"/>
+          android:paddingTop="10dp"
+          android:padding="5dp"
+          android:textColor="#ff858585"/>
       <View 
           android:layout_width="fill_parent"
           android:layout_height="1dp"
@@ -48,6 +51,9 @@
           android:id="@+id/scheduletime"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
+          android:textSize="18dp"
+          android:paddingTop="5dp"
+          android:padding="5dp"
           android:layout_below="@id/scheduleDatetext"
           />
        <TextView 
@@ -55,6 +61,8 @@
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:textSize="18sp"
+          android:padding="5dp"
+          android:paddingTop="5dp"
           android:layout_below="@id/scheduletime"
           />
        <TextView 
@@ -63,8 +71,25 @@
            android:layout_height="wrap_content"
            android:layout_below="@id/scheduletime"
            android:layout_toRightOf="@id/scheduletime"
+           android:paddingTop="5dp"
            android:textSize="16sp"
-           android:layout_marginLeft="80dp"/>
+          
+           />
+   <ImageView 
+       android:layout_width="40dp"
+       android:layout_height="40dp"
+       android:id="@+id/edit_bttuon"
+       android:paddingRight="10dp"
+       android:layout_below="@id/scheduleDatetext"
+       android:layout_alignParentRight="true"
+       android:src="@drawable/editt"/>
+   <ImageView 
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+       android:id="@+id/trash_bttuon"
+       android:layout_below="@id/edit_bttuon"
+       android:layout_alignParentRight="true"
+       android:src="@drawable/trash"/>
   <Button 
       android:layout_width="wrap_content"
       android:layout_height="60dp"
@@ -75,4 +100,11 @@
       android:layout_centerHorizontal="true"
       android:layout_alignParentBottom="true"
       />
+  <com.fortwone.activity.RayMenu
+      android:layout_alignParentBottom="true"
+      android:id="@+id/ray_menu"
+      android:layout_width="fill_parent"
+      android:layout_height="60dp"
+      android:paddingLeft="5dp"
+      android:paddingRight="5dp"/>
 </RelativeLayout>

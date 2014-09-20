@@ -6,35 +6,29 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
-import com.fortwone.activity.R;
-import com.fortwone.activity.ScheduleInfoView;
-import com.fortwone.activity.ScheduleTypeView;
-import com.fortwone.activity.R.id;
-import com.fortwone.activity.R.layout;
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
+import android.app.TimePickerDialog.OnTimeSetListener;
+import android.content.Intent;
+import android.graphics.Color;
+import android.os.Bundle;
+import android.text.TextUtils;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
+import android.widget.DatePicker;
+import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.TimePicker;
+
 import com.fortwone.borderText.BorderTextView;
 import com.fortwone.calendar.LunarCalendar;
 import com.fortwone.constant.CalendarConstant;
 import com.fortwone.dao.ScheduleDAO;
 import com.fortwone.vo.ScheduleDateTag;
 import com.fortwone.vo.ScheduleVO;
-
-import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.TimePickerDialog;
-import android.app.TimePickerDialog.OnTimeSetListener;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.graphics.Color;
-import android.os.Bundle;
-import android.text.TextUtils;
-import android.util.Log;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.TextView;
-import android.widget.TimePicker;
-import android.widget.Toast;
 
 /**
  * 添加日程主界面
@@ -45,11 +39,11 @@ public class ScheduleView extends Activity {
 
 	private LunarCalendar lc = null;
 	private ScheduleDAO dao = null;
-	private BorderTextView scheduleType = null;
-	private BorderTextView dateText = null;
-	private BorderTextView scheduleTop = null;
+	private TextView scheduleType = null;
+	private TextView dateText = null;
+	private TextView scheduleTop = null,seletedtime;
 	private EditText scheduleText = null;
-	private BorderTextView scheduleSave = null;  //保存按钮图片
+	private Button scheduleSave = null;  //保存按钮图片
 	private static int hour = -1;
 	private static int minute = -1;
 	private static ArrayList<String> scheduleDate = null;
@@ -81,17 +75,16 @@ public class ScheduleView extends Activity {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.schedule);
-
-		
-		scheduleTop = (BorderTextView) findViewById(R.id.scheduleTop);
-		scheduleType = (BorderTextView) findViewById(R.id.scheduleType);
-		scheduleSave = (BorderTextView) findViewById(R.id.save);
+		scheduleTop = (TextView) findViewById(R.id.scheduleTop);
+		scheduleType = (TextView) findViewById(R.id.scheduleType);
+		scheduleSave = (Button) findViewById(R.id.save);
 		scheduleType.setBackgroundColor(Color.WHITE);
 		scheduleType.setText(sch_type[0]+"\t\t\t\t"+remind[remindID]);
-		dateText = (BorderTextView) findViewById(R.id.scheduleDate);
+		dateText = (TextView) findViewById(R.id.scheduleDate);
 		dateText.setBackgroundColor(Color.WHITE);
 		scheduleText = (EditText) findViewById(R.id.scheduleText);
 		scheduleText.setBackgroundColor(Color.WHITE);
+		seletedtime=(TextView)findViewById(R.id.seletedtime);
 		if(schText != null){
 			//在选择日程类型之前已经输入了日程的信息，则在跳转到选择日程类型之前应当将日程信息保存到schText中，当返回时再次可以取得。
 			scheduleText.setText(schText);
@@ -105,6 +98,7 @@ public class ScheduleView extends Activity {
 			minute = date.getMinutes();
 		}
 		dateText.setText(getScheduleDate());
+		seletedtime.setText("提醒时间："+hour+":"+minute);
 
 		//获得日程类型
 		scheduleType.setOnClickListener(new OnClickListener() {
@@ -118,9 +112,25 @@ public class ScheduleView extends Activity {
 				startActivity(intent);
 			}
 		});
-
-		//获得时间
 		dateText.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				Calendar c = Calendar.getInstance();  
+				new DatePickerDialog(ScheduleView.this, new DatePickerDialog.OnDateSetListener() {
+					
+					@Override  
+                    public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {  
+//						getScheduleDatetime(year, monthOfYear,dayOfMonth);
+						
+						dateText.setText(getScheduleDatetime(year, monthOfYear,dayOfMonth));
+                    }  
+                }, c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH)).show();  
+             
+                 }
+		});
+		//获得时间
+		seletedtime.setOnClickListener(new OnClickListener() {
 			
 			@Override
 			public void onClick(View v) {
@@ -131,10 +141,23 @@ public class ScheduleView extends Activity {
 					public void onTimeSet(TimePicker view, int hourOfDay, int min) {
 
 						hour = hourOfDay;
+						String mhour;
+						if(hour<10){
+							mhour="0"+hour;
+						}
+						else mhour=""+hour;
+						
 						minute = min;
-						dateText.setText(getScheduleDate());
+						String mminute;
+						if(minute<10){
+							mminute="0"+minute;
+						}
+						else mminute=""+minute;
+//						dateText.setText(getScheduleDate());
+						seletedtime.setText("提醒时间："+mhour+":"+mminute);
 					}
 				}, hour, minute, true).show();
+				
 			}
 		});
 		
@@ -152,7 +175,8 @@ public class ScheduleView extends Activity {
 	                ScheduleVO schedulevo = new ScheduleVO();
 	                schedulevo.setScheduleTypeID(sch_typeID);
 	                schedulevo.setRemindID(remindID);
-	                String showDate1 = (Integer.parseInt(scheduleYear)+"年"+Integer.parseInt(tempMonth)+"月"+Integer.parseInt(tempDay)+"  "+week);
+//	                String showDate1 = (getScheduleDatetime(year, monthOfYear,dayOfMonth));
+	                String showDate1=dateText.getText().toString();
 	                schedulevo.setScheduleDate(showDate1);
 	                String showtime = handleInfotext(Integer.parseInt(scheduleYear), Integer.parseInt(tempMonth), Integer.parseInt(tempDay), hour, minute, week, remindID);
 	                schedulevo.setScheduletime(showtime);
@@ -162,7 +186,6 @@ public class ScheduleView extends Activity {
 					String [] scheduleIDs = new String[]{String.valueOf(scheduleID)};
 					Intent intent = new Intent();
 					intent.setClass(ScheduleView.this, ScheduleInfoView.class);
-					//intent.putExtra("scheduleID", String.valueOf(scheduleID));
                     intent.putExtra("scheduleID", scheduleIDs);
 					startActivity(intent);
 					
@@ -211,7 +234,6 @@ public class ScheduleView extends Activity {
 				handleDate(cal,scheduleID);
 			}
 		}else if(remindID == 5){
-			//每周重复(从设置日程的这天(星期几)，接下来的每周的这一天多要标记)
 			for(int i =0; i <= (2049-Integer.parseInt(year))*12*4; i++){
 				if( i==0 ){
 					cal.add(Calendar.WEEK_OF_MONTH, 0);
@@ -268,39 +290,33 @@ public class ScheduleView extends Activity {
 	 * @param week
 	 * @param remindID
 	 */
-//	public String handleInfo(int year, int month, int day, int hour, int minute, String week, int remindID){
-//		String remindType = remind[remindID];     //提醒类型
-//		String show = "";
-//		if(0 <= remindID && remindID <= 4){
-//			//提醒一次,隔10分钟,隔30分钟,隔一小时
-//			show = year+"-"+month+"-"+day+"\t"+hour+":"+minute+"\t"+week+"\t\t"+remindType;
-//		}else if(remindID == 5){
-//			//每周
-//			show = "每周"+week+"\t"+hour+":"+minute;
-//		}else if(remindID == 6){
-//			//每月
-//			show = "每月"+day+"号"+"\t"+hour+":"+minute;
-//		}else if(remindID == 7){
-//			//每年
-//			show = "每年"+month+"-"+day+"\t"+hour+":"+minute;
-//		}
-//		return show;
-//	}
+
 	public String handleInfotext(int year, int month, int day, int hour, int minute, String week, int remindID){
 		String remindType = remind[remindID];     //提醒类型
 		String show = "";
+		String mhour;
+		if(hour<10){
+			mhour="0"+hour;
+		}
+		else mhour=""+hour;
+		
+		String mminute;
+		if(minute<10){
+			mminute="0"+minute;
+		}
+		else mminute=""+minute;
 		if(0 <= remindID && remindID <= 4){
 			//提醒一次,隔10分钟,隔30分钟,隔一小时
-			show = hour+":"+minute+"\t"+"\t\t"+remindType;
+			show = mhour+":"+mminute+"\t\t\t"+remindType;
 		}else if(remindID == 5){
 			//每周
-			show = "每周"+week+"\t"+hour+":"+minute;
+			show =mhour+":"+mminute+"\t\t\t"+ "每周"+week;
 		}else if(remindID == 6){
 			//每月
-			show = hour+":"+minute+"\t\t"+"每月"+day+"号";
+			show = mhour+":"+mminute+"\t\t\t"+"每月"+day+"号";
 		}else if(remindID == 7){
 			//每年
-			show =hour+":"+minute+"\t\t"+"每年"+month+"-"+day;
+			show =mhour+":"+mminute+"\t\t\t"+"每年"+month+"月"+day+"日";
 		}
 		return show;
 	}
@@ -325,18 +341,33 @@ public class ScheduleView extends Activity {
 			scheduleType.setText(sch_type[sch_typeID]+"\t\t\t\t"+remind[remindID]);
 		}
 		// 得到年月日和星期
-		scheduleYear = scheduleDate.get(0);
-		scheduleMonth = scheduleDate.get(1);
+		//增加一个临时值
+		if(null==scheduleDate.get(0)){
+			
+	
+		scheduleYear="2014";
+		scheduleMonth="04";
+		scheduleDay="28";
+		week="星期一";
+		}
+		else {
+			scheduleYear = scheduleDate.get(0);
+			scheduleMonth = scheduleDate.get(1);
+			scheduleDay = scheduleDate.get(2);
+			week = scheduleDate.get(3);
+		}
+		//
+		
 		tempMonth = scheduleMonth;
 		if (Integer.parseInt(scheduleMonth) < 10) {
 			scheduleMonth = "0" + scheduleMonth;
 		}
-		scheduleDay = scheduleDate.get(2);
+		
 		tempDay = scheduleDay;
 		if (Integer.parseInt(scheduleDay) < 10) {
 			scheduleDay = "0" + scheduleDay;
 		}
-		week = scheduleDate.get(3);
+		
 		String hour_c = String.valueOf(hour);
 		String minute_c = String.valueOf(minute);
 		if(hour < 10){
@@ -350,14 +381,49 @@ public class ScheduleView extends Activity {
 				Integer.parseInt(scheduleMonth), Integer.parseInt(scheduleDay));
 		String scheduleLunarMonth = lc.getLunarMonth(); // 得到阴历的月份
 		StringBuffer scheduleDateStr = new StringBuffer();
-		scheduleDateStr.append(scheduleYear).append("-").append(scheduleMonth)
-				.append("-").append(scheduleDay).append(" ").append(hour_c).append(":").append(minute_c).append("\n").append(
-						scheduleLunarMonth).append(scheduleLunarDay)
-				.append(" ").append(week);
+//		scheduleDateStr.append(scheduleYear).append("-").append(scheduleMonth)
+//				.append("-").append(scheduleDay).append(" ").append(hour_c).append(":").append(minute_c).append("\n").append(
+//						scheduleLunarMonth).append(scheduleLunarDay)
+//				.append(" ").append(week);
+		scheduleDateStr.append(scheduleYear).append("年").append(scheduleMonth)
+		.append("月").append(scheduleDay).append("日 ").append(" ").append(week).append(" 农历").append(
+				scheduleLunarMonth).append(scheduleLunarDay)
+		;
 		// dateText.setText(scheduleDateStr);
 		return scheduleDateStr.toString();
 	}
-
+/*
+ * 重写日历的日期选择，增加日期可选
+ */
+	public String getScheduleDatetime(int year, int monthOfYear, int dayOfMonth) {
+		// 得到年月日和星期
+		scheduleYear = ""+year;
+		int month=monthOfYear+1;
+		scheduleMonth = ""+month;
+		tempMonth = scheduleMonth;
+		if (Integer.parseInt(scheduleMonth) < 10) {
+			scheduleMonth = "0" + scheduleMonth;
+		}
+		scheduleDay =""+dayOfMonth;
+		tempDay = scheduleDay;
+		if (Integer.parseInt(scheduleDay) < 10) {
+			scheduleDay = "0" + scheduleDay;
+		}
+		
+		int c=20;//代表20世纪
+		week=CaculateWeekDay(year,monthOfYear+1,dayOfMonth);
+		// 得到对应的阴历日期
+		String scheduleLunarDay = getLunarDay(Integer.parseInt(scheduleYear),
+				Integer.parseInt(scheduleMonth), Integer.parseInt(scheduleDay));
+		String scheduleLunarMonth = lc.getLunarMonth(); // 得到阴历的月份
+		StringBuffer scheduleDateStr = new StringBuffer();
+		scheduleDateStr.append(scheduleYear).append("年").append(scheduleMonth)
+		.append("月").append(scheduleDay).append("日 ").append(" ").append(week).append(" 农历").append(
+				scheduleLunarMonth).append(scheduleLunarDay)
+		;
+		// dateText.setText(scheduleDateStr);
+		return scheduleDateStr.toString();
+	}
 	/**
 	 * 根据日期的年月日返回阴历日期
 	 * 
@@ -374,4 +440,25 @@ public class ScheduleView extends Activity {
 		}
 		return lunarDay;
 	}
+	/*
+	 * 通过蔡勒公式计算周星期几
+	 * 
+	 */
+	public static String CaculateWeekDay(int y,int m,int d){
+        if(m==1){m=13;y--;}
+        if(m==2){m=14;y--;}
+        int c=y/100;
+        y%=100;
+        int week=(c/4-2*c+y+y/4+13*(m+1)/5+d-1)%7;
+        if(week<0){week=7-(-week)%7;}
+        switch(week){
+        case 1:return "星期一";
+        case 2:return "星期二";
+        case 3:return "星期三";
+        case 4:return "星期四";
+        case 5:return "星期五";
+        case 6:return "星期六";
+        default:return "星期日";
+        }
+}
 }

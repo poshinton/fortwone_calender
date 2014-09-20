@@ -202,7 +202,7 @@ public class CalendarView extends BaseAdapter {
 		}
 		if(currentFlag == position){ 
 			//设置当天的背景
-			System.out.println("%%%%%%%%%%%%%%%"+currentFlag);
+		
 			drawable = res.getDrawable(R.drawable.current_day_bgc);
 			textView.setBackgroundDrawable(drawable);
 			textView.setTextColor(Color.WHITE);
@@ -346,7 +346,6 @@ public class CalendarView extends BaseAdapter {
 	}
 
 	public void setLeapMonth(String leapMonth) {
-		System.out.println("$$$$$$$$$$$$$$$$$$"+leapMonth);
 		if(leapMonth.equals("1") ){
 			this.leapMonth = "正月";
 		}

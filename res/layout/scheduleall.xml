@@ -4,25 +4,27 @@
     android:layout_width="fill_parent" 
     android:layout_height="fill_parent"
   xmlns:android="http://schemas.android.com/apk/res/android">
-    <FrameLayout android:orientation="vertical" 
-        android:layout_width="fill_parent" 
-        android:layout_height="390.0dip">
-        <com.fortwone.borderText.BorderTextView 
+  <TextView 
             android:textSize="15.0sp" 
-            android:textColor="@color/text_black" 
+            android:textColor="#ffffff" 
             android:gravity="center" 
             android:id="@+id/toptext1" 
-            android:background="@color/title_red" 
+            android:background="#009944" 
             android:layout_width="fill_parent" 
-            android:layout_height="38.0dip" 
+            android:layout_height="46.0dip" 
             android:text="@string/noschedleall" />
-        <com.fortwone.borderText.BorderTextView 
+    <FrameLayout android:orientation="vertical" 
+        android:layout_width="fill_parent" 
+        android:id="@+id/schedulelist"
+        android:layout_height="390.0dip">
+        
+     <!--   <TextView 
             android:textColor="@color/text_black" 
             android:id="@+id/info" 
             android:layout_width="fill_parent" 
             android:layout_height="wrap_content" 
             android:layout_marginTop="60.0dip" 
-            android:text="暂无" />
+            android:text="暂无" /> --> 
     </FrameLayout>
     <Button android:textColor="@color/text_black" 
         android:id="@+id/back" 

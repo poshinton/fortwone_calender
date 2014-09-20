@@ -1,8 +1,5 @@
 package com.fortwone.activity;
 
-import com.fortwone.constant.CalendarConstant;
-import com.fortwone.borderText.BorderTextView;
-import com.fortwone.activity.R;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -16,9 +13,12 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.Toast;
-import android.widget.AbsListView.LayoutParams;
 import android.widget.RadioGroup.OnCheckedChangeListener;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
+
+import com.fortwone.borderText.BorderTextView;
+import com.fortwone.constant.CalendarConstant;
 
 /**
  * 日程类型选择
@@ -30,38 +30,24 @@ public class ScheduleTypeView extends Activity {
 	private CalendarConstant cc = null;
 	private int sch_typeID = 0;
 	private int remindID = 0;
-	private LinearLayout layout; // 布局 ， 可以在xml布局中获得
+	private RelativeLayout layout; // 布局 ， 可以在xml布局中获得
 	private LinearLayout layButton;
 	private RadioGroup group; // 点选按钮组
-	private BorderTextView textTop = null;
+	private TextView textTop = null;
 	private RadioButton radio = null;
-	private BorderTextView btSave = null;
-	private BorderTextView btCancel = null;
+	private Button btCancel,btSave ;
 	private int schType_temp = 0;
 	private int remind_temp = 0;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
-		LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
-		
+		setContentView(R.layout.picktype);
 		cc = new CalendarConstant();
-		
-		layout = new LinearLayout(this); // 实例化布局对象
-		layout.setOrientation(LinearLayout.VERTICAL);
-		layout.setLayoutParams(params);
-		
-		group = new RadioGroup(this);
-		btSave = new BorderTextView(this,null);
-		btCancel = new BorderTextView(this, null);
-		textTop = new BorderTextView(this, null);
-		textTop.setTextColor(Color.BLACK); 
-		textTop.setBackgroundResource(R.drawable.top_day);
-		textTop.setText("日程类型");
-		textTop.setHeight(47);
-		textTop.setGravity(Gravity.CENTER);
-		layout.addView(textTop);
+		layout =(RelativeLayout) findViewById(R.id.pickuplayout); // 实例化布局对象
+		group = (RadioGroup)findViewById(R.id.pickupRadio);
+		btSave = (Button)findViewById(R.id.typeok);
+		btCancel = (Button)findViewById(R.id.typecancle);
 		
 		Intent intent = getIntent();
 		int sch_remind[] = intent.getIntArrayExtra("sch_remind");  //从ScheduleView传来的值
@@ -76,31 +62,12 @@ public class ScheduleTypeView extends Activity {
 			}
 	        radio.setText(cc.sch_type[i]);
 	        radio.setId(i);
-	        radio.setTextColor(Color.BLACK);
 	        group.addView(radio);
 	        }
-		layout.addView(group);
-		
 		layButton = new LinearLayout(this);
 		layButton.setOrientation(LinearLayout.HORIZONTAL);
-		//layButton.setBackgroundResource(R.drawable.schedule_bk);
-		layButton.setLayoutParams(params);
-		btSave.setTextColor(Color.BLACK); 
-		btSave.setBackgroundResource(R.drawable.top_day);
-		btSave.setText("确定");
-		btSave.setHeight(47);
-		btSave.setWidth(160);
-		btSave.setGravity(Gravity.CENTER);
 		btSave.setClickable(true);
-		btCancel.setTextColor(Color.BLACK); 
-		btCancel.setBackgroundResource(R.drawable.top_day);
-		btCancel.setText("取消");
-		btCancel.setHeight(45);
-		btCancel.setWidth(160);
-		btCancel.setGravity(Gravity.CENTER);
 		btCancel.setClickable(true);
-		layButton.addView(btSave);
-		layButton.addView(btCancel);
 		layout.addView(layButton);
 		this.setContentView(layout);
 
@@ -112,18 +79,9 @@ public class ScheduleTypeView extends Activity {
 
 				schType_temp = checkedId;
 				
-				new AlertDialog.Builder(ScheduleTypeView.this).setTitle("日程类型")
-				.setIcon(android.R.drawable.ic_dialog_info)
-				.setSingleChoiceItems(
-						new String[] { cc.remind[0], cc.remind[1], cc.remind[2], cc.remind[3], cc.remind[4], cc.remind[5], cc.remind[6], cc.remind[7] }, remindID,
-						new DialogInterface.OnClickListener() {
-							public void onClick(DialogInterface dialog,
-									int which) {
-								remind_temp = which;
-							}
-						}).setPositiveButton("确认", null).setNegativeButton("取消", null).show();
 			}
 		});
+		
 
 		//触发确定按钮
 		btSave.setOnClickListener(new OnClickListener() {
@@ -153,12 +111,17 @@ public class ScheduleTypeView extends Activity {
 			}
 		});
 	}
-	
-	/*public static String[] getSchType() {
-		return sch_type;
+	public void picktype(View view){
+		new AlertDialog.Builder(ScheduleTypeView.this).setTitle("日程类型")
+		.setIcon(android.R.drawable.ic_dialog_info)
+		.setSingleChoiceItems(
+				new String[] { cc.remind[0], cc.remind[1], cc.remind[2], cc.remind[3], cc.remind[4], cc.remind[5], cc.remind[6], cc.remind[7] }, remindID,
+				new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog,
+							int which) {
+						remind_temp = which;
+					}
+				}).setPositiveButton("确认", null).setNegativeButton("取消", null).show();
 	}
 
-	public static String[] getRemind() {
-		return remind;
-	}*/
 }
