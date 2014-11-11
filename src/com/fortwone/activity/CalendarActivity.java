@@ -2,6 +2,7 @@ package com.fortwone.activity;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 
 import android.app.Activity;
@@ -37,6 +38,7 @@ import android.widget.TextView;
 import android.widget.ViewFlipper;
 
 import com.fortwone.borderText.BorderText;
+import com.fortwone.constant.CalendarConstant;
 import com.fortwone.dao.ScheduleDAO;
 
 /**
@@ -108,23 +110,23 @@ public class CalendarActivity extends Activity implements OnGestureListener {
 				intent.setClass(CalendarActivity.this, ScheduleAll.class);
 				startActivity(intent);
 			}
-	});
-		}
+		});
+	}
 	//添加头部的年份 闰哪月等信息
-		public void addTextToTopTextView(TextView view){
-			StringBuffer textDate = new StringBuffer();
-			draw = getResources().getDrawable(R.drawable.top_day);
-			view.setBackgroundDrawable(draw);
-			textDate.append(calV.getShowYear()).append("年").append(
-					calV.getShowMonth()).append("月").append("\t");
-			textDate.append("(").append(calV.getCyclical()).append(")").append(calV.getAnimalsYear()).append("年");
-			if (!calV.getLeapMonth().equals("") && calV.getLeapMonth() != null) {
-				textDate.append("\t").append("闰").append(calV.getLeapMonth()).append("月")
-						.append("\t");
-			}
-			view.setText(textDate);
-			view.setTypeface(Typeface.DEFAULT_BOLD);
+	public void addTextToTopTextView(TextView view){
+		StringBuffer textDate = new StringBuffer();
+		draw = getResources().getDrawable(R.drawable.top_day);
+		view.setBackgroundDrawable(draw);
+		textDate.append(calV.getShowYear()).append("年").append(
+				calV.getShowMonth()).append("月").append("\t");
+		textDate.append("(").append(calV.getCyclical()).append(")").append(calV.getAnimalsYear()).append("年");
+		if (!calV.getLeapMonth().equals("") && calV.getLeapMonth() != null) {
+			textDate.append("\t").append("闰").append(calV.getLeapMonth()).append("月")
+					.append("\t");
 		}
+		view.setText(textDate);
+		view.setTypeface(Typeface.DEFAULT_BOLD);
+	}
 	
 	@Override
 	public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX,
@@ -132,7 +134,7 @@ public class CalendarActivity extends Activity implements OnGestureListener {
 		int gvFlag = 0;         //每次添加gridview到viewflipper中时给的标记
 		if (e1.getX() - e2.getX() > 120) {
             //像左滑动
-			addGridView();   //添加一个gridView
+			//addGridView();   //添加一个gridView
 			jumpMonth++;     //下一个月
 			calV = new CalendarView(this, getResources(),jumpMonth,jumpYear,year_c,month_c,day_c);
 	        gridView.setAdapter(calV);
@@ -146,7 +148,7 @@ public class CalendarActivity extends Activity implements OnGestureListener {
 			return true;
 		} else if (e1.getX() - e2.getX() < -120) {
             //向右滑动
-			addGridView();   //添加一个gridView
+			//addGridView();   //添加一个gridView
 			jumpMonth--;     //上一个月
 			calV = new CalendarView(this, getResources(),jumpMonth,jumpYear,year_c,month_c,day_c);
 	        gridView.setAdapter(calV);
@@ -163,109 +165,130 @@ public class CalendarActivity extends Activity implements OnGestureListener {
 	}
 	
 	//添加gridview
-		private void addGridView() {
-			LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-			LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
-			//取得屏幕的宽度和高度
-			WindowManager windowManager = getWindowManager();
-	        Display display = windowManager.getDefaultDisplay();
-	        int Width = display.getWidth(); 
-	        int Height = display.getHeight();
-			gridView = new GridView(this);
-			gridView.setNumColumns(7);
-			gridView.setColumnWidth(46);
-			if(Width == 480 && Height == 800){
-				gridView.setColumnWidth(69);
-			}
-			gridView.setGravity(Gravity.CENTER_VERTICAL);
-			gridView.setSelector(new ColorDrawable(Color.TRANSPARENT)); // 去除gridView边框
-			gridView.setVerticalSpacing(1);
-			gridView.setHorizontalSpacing(1);
-//	        gridView.setBackgroundResource(R.color.bg);
-			gridView.setOnTouchListener(new OnTouchListener() {
-	            //将gridview中的触摸事件回传给gestureDetector
-				@Override
-				public boolean onTouch(View v, MotionEvent event) {
-					return CalendarActivity.this.gestureDetector
-							.onTouchEvent(event);
-				}
-			});
-			gridView.setOnItemClickListener(new OnItemClickListener() {
-	            //gridView中的每一个item的点击事件
-				@Override
-				public void onItemClick(AdapterView<?> arg0, View arg1, int position,
-						long arg3) {
-					  //点击任何一个item，得到这个item的日期(排除点击的是周日到周六(点击不响应))
-					  int startPosition = calV.getStartPositon();
-					  int endPosition = calV.getEndPosition();
-					  if(startPosition <= position  && position <= endPosition){
-						  String scheduleDay = calV.getDateByClickItem(position).split("\\.")[0];  //这一天的阳历
-		                  String scheduleYear = calV.getShowYear();
-		                  String scheduleMonth = calV.getShowMonth();
-		                  String week = "";
-		                  
-		                  //通过日期查询这一天是否被标记，如果标记了日程就查询出这天的所有日程信息
-		                  final String[] scheduleIDs = dao.getScheduleByTagDate(Integer.parseInt(scheduleYear), Integer.parseInt(scheduleMonth), Integer.parseInt(scheduleDay));
-		                  if(scheduleIDs != null && scheduleIDs.length > 0){
-		                	  //跳转到显示这一天的所有日程信息界面
-		                	  Intent intent = new Intent();
-			  				  intent.setClass(CalendarActivity.this, ScheduleInfoView.class);
-			                  intent.putExtra("scheduleID", scheduleIDs);
-			  				  startActivity(intent);
-		                  }else{
-		                  //直接跳转到需要添加日程的界面
-		                	  
-			                  //得到这一天是星期几
-			                  switch(position%7){
-			                  case 0:
-			                	  week = "星期日";
-			                	  break;
-			                  case 1:
-			                	  week = "星期一";
-			                	  break;
-			                  case 2:
-			                	  week = "星期二";
-			                	  break;
-			                  case 3:
-			                	  week = "星期三";
-			                	  break;
-			                  case 4:
-			                	  week = "星期四";
-			                	  break;
-			                  case 5:
-			                	  week = "星期五";
-			                	  break;
-			                  case 6:
-			                	  week = "星期六";
-			                	  break;
-	        }
-			                  final ArrayList<String> scheduleDate = new ArrayList<String>();
-			                  scheduleDate.add(scheduleYear);
-			                  scheduleDate.add(scheduleMonth);
-			                  scheduleDate.add(scheduleDay);
-			                  scheduleDate.add(week);
-			                  //scheduleDate.add(scheduleLunarDay);
-			                  
-			                  addbutton=(Button)findViewById(R.id.addarrange);
-		                	  hinttext=(TextView)findViewById(R.id.hittentext);
-		                	  addbutton.setVisibility(0);
-		                	  hinttext.setVisibility(0);
-		                	  hinttext.setText(scheduleYear+"年"+scheduleMonth+"月"+scheduleDay+"日  无日程安排");
-		                	  addbutton.setOnClickListener(new OnClickListener() {
-		          				@Override
-		        				public void onClick(View v) {
-		          					Intent intent = new Intent();
-		  		                  intent.putStringArrayListExtra("scheduleDate", scheduleDate);
-		  		                  intent.setClass(CalendarActivity.this, ScheduleView.class);
-		  		                  startActivity(intent);
-		          				}
-		                	  });
-	    }
-					  }
-				}
-			});
-			gridView.setLayoutParams(params);
+	private void addGridView() {
+		LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+		LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
+		//取得屏幕的宽度和高度
+		WindowManager windowManager = getWindowManager();
+        Display display = windowManager.getDefaultDisplay();
+        int Width = display.getWidth(); 
+        int Height = display.getHeight();
+		gridView = new GridView(this);
+		gridView.setNumColumns(7);
+		gridView.setColumnWidth(46);
+		if(Width == 480 && Height == 800){
+			gridView.setColumnWidth(69);
 		}
+		gridView.setGravity(Gravity.CENTER_VERTICAL);
+		gridView.setSelector(new ColorDrawable(Color.TRANSPARENT)); // 去除gridView边框
+		gridView.setVerticalSpacing(1);
+		gridView.setHorizontalSpacing(1);
+//	        gridView.setBackgroundResource(R.color.bg);
+		gridView.setOnTouchListener(new OnTouchListener() {
+            //将gridview中的触摸事件回传给gestureDetector
+			@Override
+			public boolean onTouch(View v, MotionEvent event) {
+				return CalendarActivity.this.gestureDetector
+						.onTouchEvent(event);
+			}
+		});
+		gridView.setOnItemClickListener(new OnItemClickListener() {
+            //gridView中的每一个item的点击事件
+			@Override
+			public void onItemClick(AdapterView<?> arg0, View arg1, int position,
+					long arg3) {
+				  //点击任何一个item，得到这个item的日期(排除点击的是周日到周六(点击不响应))
+				  int startPosition = calV.getStartPositon();
+				  int endPosition = calV.getEndPosition();
+				  if(startPosition <= position  && position <= endPosition)
+				  {
+					  String scheduleDay = calV.getDateByClickItem(position).split("\\.")[0];  //这一天的阳历
+	                  String scheduleYear = calV.getShowYear();
+	                  String scheduleMonth = calV.getShowMonth();
+	                  String week = "";
+	                  
+	                  //通过日期查询这一天是否被标记，如果标记了日程就查询出这天的所有日程信息
+	                  int year=Integer.parseInt(scheduleYear);
+	                  int month=Integer.parseInt(scheduleMonth);
+	                  int day=Integer.parseInt(scheduleDay);
+	                 
+	                  if( dao.hasScheduleByDate(year, month, day))
+	                  {
+	                	  //跳转到显示这一天的所有日程信息界面
+	                	  Intent intent = new Intent(CalendarActivity.this, ScheduleInfoView.class);
+		  				  intent.putExtra("year", year);
+		  				  intent.putExtra("month", month);
+		  				  intent.putExtra("day", day);
+		  				  startActivity(intent);
+	                  }else{
+	                  //直接跳转到需要添加日程的界面
+	                	  
+		                  //得到这一天是星期几
+		                  switch(position%7){
+		                  case 0:
+		                	  week = "星期日";
+		                	  break;
+		                  case 1:
+		                	  week = "星期一";
+		                	  break;
+		                  case 2:
+		                	  week = "星期二";
+		                	  break;
+		                  case 3:
+		                	  week = "星期三";
+		                	  break;
+		                  case 4:
+		                	  week = "星期四";
+		                	  break;
+		                  case 5:
+		                	  week = "星期五";
+		                	  break;
+		                  case 6:
+		                	  week = "星期六";
+		                	  break;
+		                  }	
+		                  final ArrayList<String> scheduleDate = new ArrayList<String>();
+		                  scheduleDate.add(scheduleYear);
+		                  scheduleDate.add(scheduleMonth);
+		                  scheduleDate.add(scheduleDay);
+		                  scheduleDate.add(week);
+		                  //scheduleDate.add(scheduleLunarDay);
+		                  
+		                  addbutton=(Button)findViewById(R.id.addarrange);
+	                	  hinttext=(TextView)findViewById(R.id.hittentext);
+	                	  addbutton.setVisibility(0);
+	                	  hinttext.setVisibility(0);
+	                	  hinttext.setText(scheduleYear+"年"+scheduleMonth+"月"+scheduleDay+"日  无日程安排");
+	                	  addbutton.setOnClickListener(new OnClickListener() {
+	          				@Override
+	        				public void onClick(View v) {
+	          					Intent intent = new Intent();
+		  		                intent.putStringArrayListExtra("scheduleDate", scheduleDate);
+		  		                intent.setClass(CalendarActivity.this, ScheduleView.class);
+		  		                startActivityForResult(intent, CalendarConstant.REQUEST_CODE_ADD_SCHEDULE);
+	          				}
+	                	  });
+	                  }
+				  }
+			}
+		});
+		gridView.setLayoutParams(params);
+	}
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		if(resultCode==RESULT_OK)
+		{
+			if(requestCode==CalendarConstant.REQUEST_CODE_ADD_SCHEDULE)
+			{
+				int year=data.getIntExtra("year", 1970);
+				int month=data.getIntExtra("month", 1);
+				int day=data.getIntExtra("day", 1);
+				calV.updateCarlendar(year, month, day);
+			}
+		}
+		
+	}	
 	/**
 	 * 创建菜单
 	 */

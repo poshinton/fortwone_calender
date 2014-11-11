@@ -4,20 +4,29 @@
   android:orientation="vertical"
   android:layout_width="fill_parent"
   android:id="@+id/scheduleInfolayout"
-  
   android:layout_height="fill_parent">
   
-  <TextView 
-      android:id="@+id/scheduleInfoTop"
-	  android:gravity="center"
-	  android:layout_width="fill_parent"
-	  android:layout_height="40dp"
-	  android:background="@drawable/top_day"
-	  android:textStyle="bold"
-	  android:clickable="true"
-	  android:textColor="#000000"
-	  android:text="日程"
-  />
+	<TextView 
+		android:id="@+id/scheduleInfoTop"
+		android:gravity="center"
+		android:layout_width="fill_parent"
+		android:layout_height="40dp"
+		android:background="@drawable/top_day"
+		android:textStyle="bold"
+		android:clickable="true"
+		android:textColor="#ffffff"
+		android:text="@string/schedule"
+		/>
+	<TextView 
+		android:id="@+id/scheduleDatetext"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:layout_below="@id/scheduleInfoTop"
+		android:gravity="center"
+		android:paddingTop="10dp"
+		android:padding="5dp"
+		android:textSize="18sp"
+		android:textColor="#ff858585"/>
  <!--  <com.fortwone.borderText.BorderTextView 
       android:id="@+id/scheduleInfo"
 	  android:layout_below="@id/scheduleInfoTop"
@@ -33,15 +42,8 @@
       android:layout_height="wrap_content"
       android:id="@+id/scheduleDatetext"
       android:layout_below="@id/scheduleInfoTop"
-      />-->
-      <TextView 
-          android:id="@+id/scheduleDatetext"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:layout_below="@id/scheduleInfoTop"
-          android:paddingTop="10dp"
-          android:padding="5dp"
-          android:textColor="#ff858585"/>
+      />
+
       <View 
           android:layout_width="fill_parent"
           android:layout_height="1dp"
@@ -65,46 +67,43 @@
           android:paddingTop="5dp"
           android:layout_below="@id/scheduletime"
           />
-       <TextView 
-           android:id="@+id/schedulenotes"
-           android:layout_width="wrap_content"
-           android:layout_height="wrap_content"
-           android:layout_below="@id/scheduletime"
-           android:layout_toRightOf="@id/scheduletime"
-           android:paddingTop="5dp"
-           android:textSize="16sp"
-          
-           />
-   <ImageView 
-       android:layout_width="40dp"
-       android:layout_height="40dp"
-       android:id="@+id/edit_bttuon"
-       android:paddingRight="10dp"
-       android:layout_below="@id/scheduleDatetext"
-       android:layout_alignParentRight="true"
-       android:src="@drawable/editt"/>
-   <ImageView 
-       android:layout_width="wrap_content"
-       android:layout_height="wrap_content"
-       android:id="@+id/trash_bttuon"
-       android:layout_below="@id/edit_bttuon"
-       android:layout_alignParentRight="true"
-       android:src="@drawable/trash"/>
-  <Button 
-      android:layout_width="wrap_content"
-      android:layout_height="60dp"
-      android:onClick="back"
-      android:background="@drawable/yun_button"
-      android:text="返回主界面" 
-      android:id="@+id/scheduleback"
-      android:layout_centerHorizontal="true"
-      android:layout_alignParentBottom="true"
-      />
-  <com.fortwone.activity.RayMenu
-      android:layout_alignParentBottom="true"
-      android:id="@+id/ray_menu"
-      android:layout_width="fill_parent"
-      android:layout_height="60dp"
-      android:paddingLeft="5dp"
-      android:paddingRight="5dp"/>
+    <TextView 
+        android:id="@+id/schedulenotes"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/scheduletime"
+        android:layout_toRightOf="@id/scheduletime"
+        android:paddingTop="5dp"
+        android:textSize="16sp"
+        />
+        -->
+    <com.fortwone.activity.RayMenu
+	    android:layout_alignParentBottom="true"
+	    android:id="@+id/ray_menu"
+	    android:layout_width="fill_parent"
+	    android:layout_height="50dp"
+	    android:paddingLeft="5dp"
+	    android:paddingRight="5dp"/>
+	<ListView 
+	    android:id="@+id/lv_schedule"
+	    android:layout_width="fill_parent"
+	    android:layout_height="wrap_content"
+	    android:divider="@color/listview_divider"
+	    android:dividerHeight="1dp"
+	    android:layout_below="@id/scheduleDatetext"
+	    android:layout_alignLeft="@id/scheduleDatetext"
+	    android:layout_above="@id/ray_menu"
+	    />
+	<Button 
+	    android:layout_width="wrap_content"
+	    android:layout_height="60dp"
+	    android:onClick="back"
+	    android:background="@drawable/yun_button"
+	    android:text="返回主界面" 
+	    android:visibility="gone"
+	    android:id="@+id/scheduleback"
+	    android:layout_centerHorizontal="true"
+	    android:layout_alignParentBottom="true"
+	    />
+
 </RelativeLayout>

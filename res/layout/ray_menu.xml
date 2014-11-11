@@ -7,7 +7,7 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
-        custom:childSize="44px"
+        custom:childSize="64px"
         custom:leftHolderWidth="60dp" />
 
     <FrameLayout
@@ -18,13 +18,7 @@
         android:layout_margin="4dp"
         android:background="@drawable/composer_button" >
 
-        <ImageView
-            android:id="@+id/control_hint"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:duplicateParentState="true"
-            android:src="@drawable/composer_icn_plus" />
+      
     </FrameLayout>
 
 </merge>

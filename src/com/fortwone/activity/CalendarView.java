@@ -152,6 +152,16 @@ public class CalendarView extends BaseAdapter {
 		// TODO Auto-generated method stub
 		return position;
 	}
+	
+	public void updateCarlendar(int year, int month, int day){
+		sc = new SpecialCalendar();
+		lc = new LunarCalendar();
+		currentYear = String.valueOf(year);;  //得到跳转到的年份
+		currentMonth = String.valueOf(month);  //得到跳转到的月份
+		currentDay = String.valueOf(day);  //得到跳转到的天
+		getCalendar(Integer.parseInt(currentYear),Integer.parseInt(currentMonth));
+		notifyDataSetChanged();
+	}
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {

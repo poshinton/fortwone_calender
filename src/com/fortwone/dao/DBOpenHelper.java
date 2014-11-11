@@ -26,8 +26,33 @@ public class DBOpenHelper extends SQLiteOpenHelper {
 	@Override
 	public void onCreate(SQLiteDatabase db) {
 
-		db.execSQL("CREATE TABLE IF NOT EXISTS schedule(scheduleID integer primary key autoincrement,scheduleTypeID integer,remindID integer,scheduleContent text,scheduleDate text,scheduletime text)");
-		db.execSQL("CREATE TABLE IF NOT EXISTS scheduletagdate(tagID integer primary key autoincrement,year integer,month integer,day integer,scheduleID integer)");
+		db.execSQL(
+				"CREATE TABLE IF NOT EXISTS schedule(" +
+				"scheduleID integer primary key autoincrement," +
+				"scheduleTypeID integer," +
+				"remindID integer," +
+				"scheduleContent text," +
+				"scheduleDate text," +
+				"scheduletime text)"
+				);
+		db.execSQL(
+				"CREATE TABLE IF NOT EXISTS scheduletagdate(" +
+				"tagID integer primary key autoincrement," +
+				"year integer," +
+				"month integer," +
+				"day integer," +
+				"scheduleID integer)"
+				);
+		
+		/*
+			CREATE TABLE [schedule_info] (
+			[schedule_id] INTEGER PRIMARY KEY AUTOINCREMENT, 
+			[schedule_content] TEXT, 
+			[schedule_type] INTEGER, 
+			[remind_date] CHAR(10), 
+			[remind_time] CHAR(5), 
+			[remind_type] INTEGER);
+		*/
 	    
 	}
 

@@ -42,7 +42,6 @@
 	    android:textColor="@color/text_black"
 	    android:layout_centerHorizontal="true"
 	    android:layout_alignParentBottom="true"/>
-"
 
 	<Button 
 	    android:id="@+id/orrang_day"

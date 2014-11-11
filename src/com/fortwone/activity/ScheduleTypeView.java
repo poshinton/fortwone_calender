@@ -55,12 +55,12 @@ public class ScheduleTypeView extends Activity {
 			sch_typeID = sch_remind[0];
 			remindID = sch_remind[1];
 		}
-		for(int i = 0 ; i < cc.sch_type.length ; i++){
+		for(int i = 0 ; i < cc.schedule_type.length ; i++){
 			radio = new RadioButton(this);
 			if(i == sch_typeID){
 				radio.setChecked(true);
 			}
-	        radio.setText(cc.sch_type[i]);
+	        radio.setText(cc.schedule_type[i]);
 	        radio.setId(i);
 	        group.addView(radio);
 	        }
@@ -115,7 +115,7 @@ public class ScheduleTypeView extends Activity {
 		new AlertDialog.Builder(ScheduleTypeView.this).setTitle("日程类型")
 		.setIcon(android.R.drawable.ic_dialog_info)
 		.setSingleChoiceItems(
-				new String[] { cc.remind[0], cc.remind[1], cc.remind[2], cc.remind[3], cc.remind[4], cc.remind[5], cc.remind[6], cc.remind[7] }, remindID,
+				new String[] { cc.remind_type[0], cc.remind_type[1], cc.remind_type[2], cc.remind_type[3], cc.remind_type[4], cc.remind_type[5], cc.remind_type[6], cc.remind_type[7] }, remindID,
 				new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog,
 							int which) {

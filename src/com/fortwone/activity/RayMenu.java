@@ -19,7 +19,7 @@ import android.widget.RelativeLayout;
 public class RayMenu extends RelativeLayout {
 	private RayLayout mRayLayout;
 
-	private ImageView mHintView;
+//	private ImageView mHintView;
 
 	public RayMenu(Context context) {
 		super(context);
@@ -47,7 +47,7 @@ public class RayMenu extends RelativeLayout {
 			@Override
 			public boolean onTouch(View v, MotionEvent event) {
 				if (event.getAction() == MotionEvent.ACTION_DOWN) {
-					mHintView.startAnimation(createHintSwitchAnimation(mRayLayout.isExpanded()));
+//					mHintView.startAnimation(createHintSwitchAnimation(mRayLayout.isExpanded()));
 					mRayLayout.switchState(true);
 				}
 
@@ -55,7 +55,7 @@ public class RayMenu extends RelativeLayout {
 			}
 		});
 
-		mHintView = (ImageView) findViewById(R.id.control_hint);
+//		mHintView = (ImageView) findViewById(R.id.control_hint);
 	}
 
 	public void addItem(View item, OnClickListener listener) {
@@ -102,7 +102,7 @@ public class RayMenu extends RelativeLayout {
 				}
 
 				mRayLayout.invalidate();
-				mHintView.startAnimation(createHintSwitchAnimation(true));
+//				mHintView.startAnimation(createHintSwitchAnimation(true));
 
 				if (listener != null) {
 					listener.onClick(viewClicked);

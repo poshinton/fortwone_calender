@@ -83,7 +83,7 @@ public class ScheduleAll extends Activity {
 				}else if(content.length() > 30){
 					content = content.substring(0, 30)+"...";
 				}
-				scheduleInfo = vo.getScheduleDate()+"\n"+ vo.getScheduletime()+"\n"+CalendarConstant.sch_type[vo.getScheduleTypeID()]+"\t\t\t\t"+content;
+				scheduleInfo = vo.getScheduleDate()+"\n"+ vo.getScheduleTime()+"\n"+CalendarConstant.schedule_type[vo.getScheduleTypeID()]+"\t\t\t\t"+content;
 				scheduleID = vo.getScheduleID();
 				createInfotext(scheduleInfo, scheduleID);
 			}
